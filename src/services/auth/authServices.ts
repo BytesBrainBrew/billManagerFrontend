@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_URL } from "../../shared/ApiUrl";
 import { loginDTO, signUpDTO } from "../../shared/DTO/authDTO";
+import { AXIOS_INSTANCE } from "../AxiosInstance";
 
 const loginService = (
   dto: loginDTO,
@@ -39,13 +40,8 @@ const logoutService = (
     onSuccess: (res: any) => void = () => {},
     onError: (err: any) => void = () => {}
   ) => {
-    axios
-      .delete(process.env.REACT_APP_API_URL + API_URL.logout, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
+    AXIOS_INSTANCE
+      .delete(API_URL.logout)
       .then((res) => onSuccess(res))
       .catch((err) => onError(err));
   };

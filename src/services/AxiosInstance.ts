@@ -1,23 +1,25 @@
 import axios from "axios";
 import { statusCodeValue } from "../shared/statusCode";
 import { frontendUrl } from "../shared/frontendUrl";
-
+import { localStorageKey } from "../shared/cookies";
+// extract the token from the local storage
+const token = localStorage.getItem(localStorageKey.token);
 export const AXIOS_INSTANCE = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
    "Content-Type": "application/json",
     Accept: "application/json",
+    Authorization: token
   },
 });
 
 // controller this variable initiallise the class of the AbortController and use the method
 const controller = new AbortController();
-// extract the token from the cookies
-const token = "";
+
 AXIOS_INSTANCE.interceptors.request.use(
   function (config) {
     if (!token) {
-      // if token is not in the cookies then request is abort from the front-end
+      // if token is not in the local storage then request is abort from the front-end
       controller.abort();
     }
     return config;
